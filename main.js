@@ -81,6 +81,9 @@ onSnapshot(queryPesan, (cuplikan) => {
     // render pesan (memanggil fungsi renderPesan)
     renderPesan(data.username, data.message, waktu)
   })
+  
+  // scroll chatBox ke bawa setiap kali ada pesan baru 
+  chatBox.scrollTop = chatBox.scrollHeight
 })
 
 function renderPesan(username, message, waktu) {
@@ -90,10 +93,13 @@ function renderPesan(username, message, waktu) {
   // menambah nama class massage-card ke elemen massageDiv 
   massageDiv.classList.add("message-card")
   
+// memanggil fungsi stringToColor untuk mendapatkan warna berdasarkan username
+const warnaUser = stringToColor(username)
+  
   // menambahkan kontak pesan ke massageDiv
   massageDiv.innerHTML = `
   <div class="message-content">
-    <strong>${username}</strong>
+    <strong style="color: ${warnaUser}">${username}</strong>
     <span>${message}</span>
   </div>
   <span class="time">${waktu}</span>
@@ -101,4 +107,15 @@ function renderPesan(username, message, waktu) {
   
   // menambahkan massageDiv ke chatBox
   chatBox.appendChild(massageDiv)
+}
+
+// Fungsi untuk mengubah String Nama menjadi Warna (HSL) yang Konsisten
+function stringToColor(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  // Ambil nilai Hue 0 - 360, dengan Saturation 65% & Lightness 40% agar warna tetap kontras/jelas
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue}, 65%, 40%)`;
 }
