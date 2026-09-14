@@ -1,4 +1,4 @@
-console.log('tes me')
+
 // 1. Impor module yang diperlukan dari firebase dan firestore
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"
 import {
@@ -30,7 +30,7 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const messagesCollection = collection(db, "message")
 
-console.log('tes 00')
+
 // Menemukan elemen-elemen DOM yang diperlukan
 const chatForm = document.getElementById("chat-form")
 const usernameInput = document.getElementById("username")
@@ -60,12 +60,10 @@ chatForm.addEventListener("submit", async (e) => {
   }
 })
 
-console.log('tes 0')
 
 // fitur pesan listener(Realtime)
-const queryPesan = query(messageCollection, orderBy("waktu", "asc"))
+const queryPesan = query(messagesCollection, orderBy("waktu", "asc"))
 
-console.log("tes 1")
 
 onSnapshot(queryPesan, (cuplikan) => {
   //Bersihkan chatBox sebelum menampilkan pesan baru
@@ -77,7 +75,8 @@ onSnapshot(queryPesan, (cuplikan) => {
     const data = doc.data()
     
     // membuat tampilan waktu 
-    const waktu = data.waktu.toDate().toLocaletimeString([], { hour: '2-digit', minute: '2-digit' })
+    const waktu = data.waktu.toDate().toLocaleTimeString([], 
+    { hour: '2-digit', minute: '2-digit' })
     
     // render pesan (memanggil fungsi renderPesan)
     renderPesan(data.username, data.message, waktu)
